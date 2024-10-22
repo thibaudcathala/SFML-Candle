@@ -15,8 +15,8 @@ namespace candle{
     int RadialLight::s_instanceCount = 0;
     const float BASE_RADIUS = 400.0f;
     bool l_texturesReady(false);
-    std::unique_ptr<sf::RenderTexture> l_lightTextureFade;
-    std::unique_ptr<sf::RenderTexture> l_lightTexturePlain;
+    sf::RenderTexture *l_lightTextureFade;
+    sf::RenderTexture *l_lightTexturePlain;
 
     void initializeTextures(){
         #ifdef CANDLE_DEBUG
@@ -24,8 +24,8 @@ namespace candle{
         #endif
         int points = 100;
 
-        l_lightTextureFade.reset(new sf::RenderTexture);
-        l_lightTexturePlain.reset(new sf::RenderTexture);
+        l_lightTextureFade = new sf::RenderTexture;
+        l_lightTexturePlain = new sf::RenderTexture;
         l_lightTextureFade->create(BASE_RADIUS*2 + 2, BASE_RADIUS*2 + 2);
         l_lightTexturePlain->create(BASE_RADIUS*2 + 2, BASE_RADIUS*2 + 2);
 
@@ -93,8 +93,8 @@ namespace candle{
             l_lightTextureFade &&
             l_lightTexturePlain)
         {
-            l_lightTextureFade.reset(nullptr);
-            l_lightTexturePlain.reset(nullptr);
+            delete l_lightTextureFade;
+            delete l_lightTexturePlain;
             l_texturesReady = false;
             #ifdef CANDLE_DEBUG
             std::cout << "RadialLight: Textures destroyed" << std::endl;
